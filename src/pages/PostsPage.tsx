@@ -4,10 +4,11 @@ import React, { useContext, useEffect } from 'react';
 import { PostList } from '../components/PostList';
 import { Loader } from '../components/Loader';
 import { PostsContext } from '../store/PostsContext';
+import { Link, Outlet } from 'react-router-dom';
 
 export const PostsPage: React.FC = () => {
   const { posts, loading, errorMessage, loadPosts } = useContext(PostsContext);
-  const userId = 11;
+  const userId = 962;
 
   useEffect(() => {
     loadPosts(userId);
@@ -27,11 +28,13 @@ export const PostsPage: React.FC = () => {
         <p>There are no posts yet</p>
       )}
 
-      <a href="#/posts/new" className="button is-info">Create a post</a>
+      <Link to="/posts/new" className="button is-info">Create a post</Link>
 
       {errorMessage && (
         <p className="notification is-danger">{errorMessage}</p>
       )}
+
+      <Outlet />
     </div>
   );
 };

@@ -1,12 +1,6 @@
-import { Routes, Route, Link } from "react-router-dom";
-import React, { useState } from "react";
-import { NewPostPage } from "./pages/NewPostPage";
-import { PostDetailsPage } from "./pages/PostDetailsPage";
-import { PostsPage } from "./pages/PostsPage";
-import { UsersPage } from "./pages/UsersPage";
-import { HomePage } from "./pages/HomePage";
+import { Link, Outlet } from "react-router-dom";
 
-export const App: React.FC = () => {
+export const App = () => {
 
   return (
     <>
@@ -39,13 +33,9 @@ export const App: React.FC = () => {
         </div>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/posts" element={<PostsPage />} />
-        <Route path="/posts/620" element={<PostDetailsPage />} />
-        <Route path="/newPost" element={<NewPostPage />} />
-      </Routes>
+      <div className="section">
+        <Outlet />
+      </div>
     </>
   );
 };
