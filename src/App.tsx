@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 
 const getLinkClassName = ({ isActive }: { isActive: boolean }) => `navbar-item ${isActive ? "is-active" : ""}`;
 
@@ -7,6 +7,7 @@ const getLinkStyle = ({ isActive }: { isActive: boolean }) => ({
 });
 
 export const App = () => {
+  const { userId } = useParams();
 
   return (
     <>
@@ -26,6 +27,7 @@ export const App = () => {
 
           <NavLink
             to="/users"
+            end
             className={getLinkClassName}
             style={getLinkStyle}
           >
@@ -39,6 +41,17 @@ export const App = () => {
           >
             Posts
           </NavLink>
+
+          {userId && (
+            <NavLink
+              to={`users/${userId}/posts`}
+              className={getLinkClassName}
+              style={getLinkStyle}
+          >
+            {`User ${userId} Posts`}
+          </NavLink>
+          )}
+
         </div>
       </nav>
 

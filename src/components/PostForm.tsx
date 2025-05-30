@@ -73,7 +73,7 @@ export const PostForm: React.FC<Props> = ({
 
     try {
       await onSubmit({ id, title, body, userId });
-      navigate('/posts');
+      navigate(`/posts?userId=${userId}`);
     } catch (error) {
       // Error is handled by the parent component
     } finally {
@@ -82,7 +82,7 @@ export const PostForm: React.FC<Props> = ({
   };
 
   const handleCancel = () => {
-    navigate('/posts');
+    navigate(`/posts?userId=${userId}`);
   };
 
   return (
