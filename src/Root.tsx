@@ -22,7 +22,7 @@ export const Root = () => (
             </Route>
             <Route path="posts">
               <Route index element={<PostsPage />} />
-              <Route path="962" element={<PostDetailsPage />} />
+              <Route path=":postId" element={<PostDetailsPage />} />
               <Route path="new" element={<NewPostPage />} />
             </Route>
           </Route>

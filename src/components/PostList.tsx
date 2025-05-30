@@ -1,20 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Post } from '../types/Post';
-import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+import { PostsContext } from '../store/PostsContext';
 
 type Props = {
   posts: Post[];
-  selectedPostId?: number;
-  onDelete?: (id: number) => void;
-  onSelect?: (post: Post) => void;
 };
 
-export const PostList: React.FC<Props> = React.memo((({
-  posts,
-  selectedPostId,
-  onDelete = () => {}, 
-  onSelect = () => {},
-}) => {
+export const PostList: React.FC<Props> = ({ posts }) => {
+  const { deletePost } = useContext(PostsContext);
+
   return (
     <table className="table is-striped is-narrow">
       <thead>
@@ -26,32 +21,27 @@ export const PostList: React.FC<Props> = React.memo((({
           <th></th>
         </tr>
       </thead>
-  
+
       <tbody>
         {posts.map(post => (
-          <tr 
-            key={post.id} 
-            className={classNames({
-              'has-background-info': selectedPostId === post.id,
-            })}
-          >
+          <tr key={post.id}>
             <td>{post.id}</td>
             <td>{post.title}</td>
             <td>{post.body}</td>
             <td>
-              <button
+              <Link
+                to={`${post.id}`}
                 className="icon button is-inverted is-info"
-                onClick={() => onSelect(post)}
               >
-                <i className="fas fa-pen"></i>
-              </button>
+                <i className="fas fa-pen" />
+              </Link>
             </td>
             <td>
               <button
                 className="icon button is-inverted is-danger"
-                onClick={() => onDelete(post.id)}
+                onClick={() => deletePost(post.id)}
               >
-                <i className="fas fa-xmark"></i>
+                <i className="fas fa-xmark" />
               </button>
             </td>
           </tr>
@@ -59,4 +49,4 @@ export const PostList: React.FC<Props> = React.memo((({
       </tbody>
     </table>
   );
-}));
+};

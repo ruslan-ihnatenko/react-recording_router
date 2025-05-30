@@ -8,7 +8,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 export const PostsPage: React.FC = () => {
   const { posts, loading, errorMessage, loadPosts } = useContext(PostsContext);
-  const userId = 962;
+  const userId = 11;
 
   useEffect(() => {
     loadPosts(userId);
@@ -28,7 +28,7 @@ export const PostsPage: React.FC = () => {
         <p>There are no posts yet</p>
       )}
 
-      <Link to="/posts/new" className="button is-info">Create a post</Link>
+      <Link to="new" className="button is-info">Create a post</Link>
 
       {errorMessage && (
         <p className="notification is-danger">{errorMessage}</p>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 
 import { Post } from '../types/Post';
 import { User } from '../types';
@@ -19,6 +20,7 @@ export const PostForm: React.FC<Props> = ({
   fixedUserId = 0,
   users=[],
 }) => {
+  const navigate = useNavigate();
   // #region state
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -47,7 +49,7 @@ export const PostForm: React.FC<Props> = ({
     setBodyErrorMessage('');
   };
   // #endregion
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     // #region validation
     event.preventDefault();
 
@@ -69,31 +71,22 @@ export const PostForm: React.FC<Props> = ({
 
     setIsSubmitting(true);
 
-    onSubmit({ id, title, body, userId })
-      .then(reset)
-      .finally(() => setIsSubmitting(false));
+    try {
+      await onSubmit({ id, title, body, userId });
+      navigate('/posts');
+    } catch (error) {
+      // Error is handled by the parent component
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  // #region reset
-  const reset = () => {
-    setTitle(post?.title || '');
-    setUserId(post?.userId || fixedUserId);
-    setBody(post?.body || '');
 
-    setHasTitleError(false);
-    setHasUserIdError(false);
-    setBodyErrorMessage('');
-
-    onReset();
+  const handleCancel = () => {
+    navigate('/posts');
   };
-  // #endregion
 
   return (
-    <form
-      action="/api/posts" 
-      method="POST"
-      onSubmit={handleSubmit}
-      onReset={reset}
-    >
+    <form onSubmit={handleSubmit}>
       <div className="field">
         <label className="label" htmlFor="post-title">
           Title
@@ -187,13 +180,15 @@ export const PostForm: React.FC<Props> = ({
           className={classNames('button is-link', {
             'is-loading': isSubmitting,
           })}
+          disabled={isSubmitting}
         >
           {post ? 'Save' : 'Create'}
         </button>
 
         <button 
-          type="reset" 
+          type="button" 
           className="button is-link is-light"
+          onClick={handleCancel}
           disabled={isSubmitting}
         >
           Cancel
